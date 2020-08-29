@@ -16,7 +16,7 @@ app.post('/events', (req, res) => {
   axios.post(`${urlPostService}/events`, event);
   axios.post(`${urlQueryService}/events`, event);
 
-  res.status(200).send({ status: 'OK' });
+  res.send({ status: 'OK' });
 });
 
 app.listen(4005, () => {
