@@ -8,6 +8,7 @@ dotenv.config({ path: '../.env' });
 const app = express();
 app.use(bodyParser.json());
 
+// INCOMING events
 app.post('/events', (req, res) => {
   const event = req.body;
 
@@ -15,6 +16,9 @@ app.post('/events', (req, res) => {
   axios.post(`${process.env.URL_COMMENTS_SERVICE}/events`, event);
   axios.post(`${process.env.URL_POSTS_SERVICE}/events`, event);
   axios.post(`${process.env.URL_QUERY_SERVICE}/events`, event);
+  axios.post(`${process.env.URL_MODERATION_SERVICE}/events`, event);
+
+  console.log('Event Bus received and emitted event', req.body.type);
 
   res.send({ status: 'OK' });
 });

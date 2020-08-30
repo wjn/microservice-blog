@@ -16,7 +16,7 @@ app.get('/posts', (req, res) => {
   res.send(posts);
 });
 
-// endpoint to receive events emmitted from event buss
+// endpoint to receive INCOMING events emmitted from event bus
 app.post('/events', (req, res) => {
   const { type, data } = req.body;
 
@@ -28,12 +28,31 @@ app.post('/events', (req, res) => {
 
   // process new comments
   if (type === 'CommentCreated') {
-    const { id, content, postId } = data;
+    const { id, content, status, postId } = data;
     const post = posts[postId];
-    post.comments.push({ id, content });
+    // rewrites comments array based on the array of comments received
+    post.comments.push({ id, content, status });
   }
 
-  res.send({});
+  // process UPDATED comments
+  if (type === 'CommentUpdated') {
+    const { id, content, status, postId } = data;
+    const post = posts[postId];
+    const comment = post.comments.find((comment) => {
+      return comment.id === id;
+    });
+
+    console.log(
+      `Query Service updated comment status from ${comment.status} to ${status}`
+    );
+
+    comment.status = status;
+    comment.content = content;
+  }
+
+  console.log('Query Service received event', type);
+
+  res.send({ status: 'OK' });
 });
 
 app.listen(4002, () => {

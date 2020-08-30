@@ -36,8 +36,9 @@ app.post('/posts', async (req, res) => {
 
 // endpoint to receive events from the event bus
 app.post('/events', (req, res) => {
-  console.log('Post Service received event', req.body.type);
-  res.send({});
+  const { type, data } = req.body;
+  console.log('Post Service received event', type);
+  res.send({ status: 'OK' });
 });
 
 app.listen(4000, () => {
