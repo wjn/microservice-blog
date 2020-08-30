@@ -8,9 +8,14 @@ dotenv.config({ path: '../.env' });
 const app = express();
 app.use(bodyParser.json());
 
+const events = [];
+
 // INCOMING events
 app.post('/events', (req, res) => {
   const event = req.body;
+
+  // persist events. Most recent event is at the end of the array
+  events.push(event);
 
   // broadcast all activity to all services
   axios.post(`${process.env.URL_COMMENTS_SERVICE}/events`, event);
@@ -21,6 +26,10 @@ app.post('/events', (req, res) => {
   console.log('Event Bus received and emitted event', req.body.type);
 
   res.send({ status: 'OK' });
+});
+
+app.get('/events', (req, res) => {
+  res.send(events);
 });
 
 app.listen(4005, () => {
