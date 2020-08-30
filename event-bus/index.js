@@ -12,6 +12,7 @@ const urlQueryService = 'http://localhost:4002';
 app.post('/events', (req, res) => {
   const event = req.body;
 
+  // broadcast all activity to all services
   axios.post(`${urlCommentsService}/events`, event);
   axios.post(`${urlPostService}/events`, event);
   axios.post(`${urlQueryService}/events`, event);

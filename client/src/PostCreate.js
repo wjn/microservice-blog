@@ -4,10 +4,13 @@ import axios from 'axios';
 export default () => {
   const [title, setTitle] = useState('');
 
+  const urlPostsService = 'http://localhost:4000';
+
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    await axios.post('http://localhost:4000/posts', {
+    // send new post to Post Service
+    await axios.post(`${urlPostsService}/posts`, {
       title,
     });
 

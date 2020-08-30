@@ -2,6 +2,10 @@ import React from 'react';
 import PostCreate from './PostCreate';
 import PostList from './PostList';
 
+/**
+ * TODO: build context to support updating view when
+ * new posts or comments are submitted.
+ */
 export default () => {
   return (
     <div className="container">

@@ -7,19 +7,25 @@ import axios from 'axios';
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+const urlEventBus = 'http://localhost:4005';
+
 const posts = {};
 
+// endpoint for providing all posts in memory
 app.get('/posts', (req, res) => {
   res.send(posts);
 });
 
+// endpoint for receiving new posts
 app.post('/posts', async (req, res) => {
   const id = randomBytes(4).toString('hex');
   const { title } = req.body;
 
   posts[id] = { id, title };
 
-  await axios.post('http://localhost:4005/events', {
+  // post to Event Bus
+  await axios.post(`${urlEventBus}/events`, {
     type: 'PostCreated',
     data: { id, title },
   });
@@ -27,6 +33,7 @@ app.post('/posts', async (req, res) => {
   res.status(201).send(posts[id]);
 });
 
+// endpoint to receive events from the event bus
 app.post('/events', (req, res) => {
   console.log('Post Service received event', req.body.type);
   res.send({});

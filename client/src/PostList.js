@@ -6,8 +6,11 @@ import CommentList from './CommentList';
 export default () => {
   const [posts, setPosts] = useState({});
 
+  const urlQueryService = 'http://localhost:4002';
+
   const fetchPosts = async () => {
-    const res = await axios.get('http://localhost:4000/posts');
+    // get aggregated posts from the query service
+    const res = await axios.get(`${urlQueryService}/posts`);
     // axios returns an object on a data prop
     setPosts(res.data);
   };
@@ -24,7 +27,7 @@ export default () => {
         key={post.id}>
         <div className="card-body">
           <h3>{post.title}</h3>
-          <CommentList postId={post.id} />
+          <CommentList comments={post.comments} />
           <CommentCreate postId={post.id} />
         </div>
       </div>

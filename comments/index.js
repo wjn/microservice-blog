@@ -9,14 +9,23 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const commentsByPostId = {};
+const urlEventBus = 'http://localhost:4005';
 
-app.get('/posts/:id/comments', (req, res) => {
-  res.send(commentsByPostId[req.params.id] || []);
-});
+// TODO: remove as unneeded with query service
+// send all comments for a given post
+// app.get('/posts/:id/comments', (req, res) => {
+//   res.send(commentsByPostId[req.params.id] || []);
+// });
 
+// create new comment for a post
 app.post('/posts/:id/comments', async (req, res) => {
   const commentId = randomBytes(4).toString('hex');
-  const { content } = req.body;
+  const { content } = trim(req.body);
+
+  // no blank comments
+  if (!content) {
+    return;
+  }
 
   const comments = commentsByPostId[req.params.id] || [];
 
@@ -24,7 +33,8 @@ app.post('/posts/:id/comments', async (req, res) => {
 
   commentsByPostId[req.params.id] = comments;
 
-  await axios.post('http://localhost:4005/events', {
+  // send processed comment to the event bus
+  await axios.post(`${urlEventBus}/events`, {
     type: 'CommentCreated',
     data: {
       id: commentId,
