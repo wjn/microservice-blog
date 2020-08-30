@@ -3,13 +3,15 @@ import { randomBytes } from 'crypto';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 const commentsByPostId = {};
-const urlEventBus = 'http://localhost:4005';
 
 // TODO: remove as unneeded with query service
 // send all comments for a given post
@@ -34,7 +36,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   commentsByPostId[req.params.id] = comments;
 
   // send processed comment to the event bus
-  await axios.post(`${urlEventBus}/events`, {
+  await axios.post(`${process.env.URL_EVENT_BUS}/events`, {
     type: 'CommentCreated',
     data: {
       id: commentId,
@@ -46,6 +48,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   res.status(201).send(comments);
 });
 
+// end point to receive events from Event Bus
 app.post('/events', (req, res) => {
   console.log('Comments Service received event', req.body.type);
   res.send({});

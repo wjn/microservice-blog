@@ -1,21 +1,20 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
-
-const urlPostService = 'http://localhost:4000';
-const urlCommentsService = 'http://localhost:4001';
-const urlQueryService = 'http://localhost:4002';
 
 app.post('/events', (req, res) => {
   const event = req.body;
 
   // broadcast all activity to all services
-  axios.post(`${urlCommentsService}/events`, event);
-  axios.post(`${urlPostService}/events`, event);
-  axios.post(`${urlQueryService}/events`, event);
+  axios.post(`${process.env.URL_COMMENTS_SERVICE}/events`, event);
+  axios.post(`${process.env.URL_POSTS_SERVICE}/events`, event);
+  axios.post(`${process.env.URL_QUERY_SERVICE}/events`, event);
 
   res.send({ status: 'OK' });
 });

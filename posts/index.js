@@ -3,12 +3,13 @@ import { randomBytes } from 'crypto';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
-const urlEventBus = 'http://localhost:4005';
 
 const posts = {};
 
@@ -25,7 +26,7 @@ app.post('/posts', async (req, res) => {
   posts[id] = { id, title };
 
   // post to Event Bus
-  await axios.post(`${urlEventBus}/events`, {
+  await axios.post(`${process.env.URL_EVENT_BUS}/events`, {
     type: 'PostCreated',
     data: { id, title },
   });
