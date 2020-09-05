@@ -1,18 +1,17 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
+
+const URL_EVENT_BUS = 'http://event-bus-srv:4005';
 
 app.post('/events', async (req, res) => {
   const { type, data } = req.body;
   if (type === 'CommentCreated') {
     const status = data.content.includes('orange') ? 'rejected' : 'approved';
-    await axios.post(`${process.env.URL_EVENT_BUS}/events`, {
+    await axios.post(`${URL_EVENT_BUS}/events`, {
       type: 'CommentModerated',
       data: {
         id: data.id,

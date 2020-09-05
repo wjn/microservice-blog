@@ -6,11 +6,11 @@ import CommentList from './CommentList';
 export default () => {
   const [posts, setPosts] = useState({});
 
-  const urlQueryService = 'http://localhost:4002';
+  const URL_QUERY_SERVICE = 'http://query-srv:4002';
 
   const fetchPosts = async () => {
     // get aggregated posts from the query service
-    const res = await axios.get(`${urlQueryService}/posts`);
+    const res = await axios.get(`${URL_QUERY_SERVICE}/posts`);
     // axios returns an object on a data prop
     setPosts(res.data);
   };

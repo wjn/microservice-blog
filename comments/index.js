@@ -3,15 +3,14 @@ import { randomBytes } from 'crypto';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 const commentsByPostId = {};
+
+const URL_EVENT_BUS = 'http://event-bus-srv:4005';
 
 // ==================================================
 // TODO: remove as unneeded with query service
@@ -40,7 +39,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   commentsByPostId[req.params.id] = comments;
 
   // send created comment to the event bus
-  await axios.post(`${process.env.URL_EVENT_BUS}/events`, {
+  await axios.post(`${URL_EVENT_BUS}/events`, {
     type: 'CommentCreated',
     data: {
       id: commentId,
@@ -67,7 +66,7 @@ app.post('/events', async (req, res) => {
 
     comment.status = status;
 
-    await axios.post(`${process.env.URL_EVENT_BUS}/events`, {
+    await axios.post(`${URL_EVENT_BUS}/events`, {
       type: 'CommentUpdated',
       data: {
         id,

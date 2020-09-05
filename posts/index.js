@@ -3,15 +3,14 @@ import { randomBytes } from 'crypto';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 const posts = {};
+
+const URL_EVENT_BUS = 'http://event-bus-srv:4005';
 
 // endpoint for providing all posts in memory
 app.get('/posts', (req, res) => {
@@ -26,7 +25,7 @@ app.post('/posts', async (req, res) => {
   posts[id] = { id, title };
 
   // post to Event Bus
-  await axios.post(`${process.env.URL_EVENT_BUS}/events`, {
+  await axios.post(`${URL_EVENT_BUS}/events`, {
     type: 'PostCreated',
     data: { id, title },
   });
@@ -42,5 +41,5 @@ app.post('/events', (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log('Posts Service listening on port 4000');
+  console.log('Posts Service [v0.1.6] listening on port 4000');
 });

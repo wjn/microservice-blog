@@ -2,15 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../.env' });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 const posts = {};
+
+const URL_EVENT_BUS = 'http://event-bus-srv:4005';
 
 const handleEvent = (type, data) => {
   switch (type) {
@@ -67,7 +66,7 @@ app.post('/events', (req, res) => {
 app.listen(4002, async () => {
   console.log('Query Service listening on port 4002');
 
-  const res = await axios.get(`${process.env.URL_EVENT_BUS}/events`);
+  const res = await axios.get(`${URL_EVENT_BUS}/events`);
 
   for (let event of res.data) {
     console.log(`Query Services is processing a(n) ${event.type} event`);

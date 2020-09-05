@@ -16,10 +16,25 @@ spec:
     spec:
       containers:
         - name: posts
-          image: wjn1/posts:0.0.1
+          image: wjn1/posts:0.1.6
           resources:
             limits:
               memory: '128Mi'
               cpu: '500m'
           ports:
             - containerPort: 4000
+---
+# Posts ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  selector:
+    app: posts
+  type: ClusterIP
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
