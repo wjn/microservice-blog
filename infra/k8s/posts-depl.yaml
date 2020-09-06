@@ -4,7 +4,7 @@ metadata:
   name: posts-depl
 spec:
   replicas: 1
-  # Manaage pods created with the label app: posts
+  # Manage pods created with the label app: posts
   selector:
     matchLabels:
       app: posts

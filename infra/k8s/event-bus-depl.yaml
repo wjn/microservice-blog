@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: event-bus
-          image: wjn1/event-bus
+          image: wjn1/event-bus:0.0.3
           resources:
             limits:
               memory: '128Mi'
