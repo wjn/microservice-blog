@@ -14,6 +14,7 @@ const URL_EVENT_BUS = 'http://event-bus-srv:4005';
 
 // endpoint for providing all posts in memory
 app.get('/posts', (req, res) => {
+  console.log('sending entire post object');
   res.send(posts);
 });
 
@@ -30,6 +31,8 @@ app.post('/posts', async (req, res) => {
     data: { id, title },
   });
 
+  console.log('new post received');
+
   res.status(201).send(posts[id]);
 });
 
@@ -41,5 +44,5 @@ app.post('/events', (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log('Posts Service [v0.1.6] listening on port 4000');
+  console.log('Posts Service [v0.1.7] listening on port 4000');
 });
