@@ -81,5 +81,5 @@ app.post('/events', async (req, res) => {
 });
 
 app.listen(4001, () => {
-  console.log('Comments Service listening on port 4001');
+  console.log('Comments Service (0.0.3) listening on port 4001');
 });

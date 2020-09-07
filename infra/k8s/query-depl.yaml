@@ -2,40 +2,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: event-bus-depl
+  name: query-depl
 spec:
   replicas: 1
-  # Manaage pods created with the label app: event-bus
+  # Manaage pods created with the label app: query
   selector:
     matchLabels:
-      app: event-bus
-  # create pods and give them the label app: event-bus
+      app: query
+  # create pods and give them the label app: query
   template:
     metadata:
       labels:
-        app: event-bus
+        app: query
     spec:
       containers:
-        - name: event-bus
-          image: wjn1/event-bus:0.0.4
+        - name: query
+          image: wjn1/query:0.0.1
           resources:
             limits:
               memory: '128Mi'
               cpu: '500m'
           ports:
-            - containerPort: 4005
+            - containerPort: 4002
 ---
 # Event Bus ClusterIP
 apiVersion: v1
 kind: Service
 metadata:
-  name: event-bus-srv
+  name: query-srv
 spec:
   selector:
-    app: event-bus
+    app: query
   type: ClusterIP
   ports:
-    - name: event-bus
+    - name: query
       protocol: TCP
-      port: 4005
-      targetPort: 4005
+      port: 4002
+      targetPort: 4002

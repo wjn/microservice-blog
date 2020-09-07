@@ -69,7 +69,9 @@ app.listen(4002, async () => {
   const res = await axios.get(`${URL_EVENT_BUS}/events`);
 
   for (let event of res.data) {
-    console.log(`Query Services is processing a(n) ${event.type} event`);
+    console.log(
+      `Query Services (v 0.0.1) is processing a(n) ${event.type} event`
+    );
     handleEvent(event.type, event.data);
   }
 });

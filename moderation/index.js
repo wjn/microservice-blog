@@ -22,7 +22,7 @@ app.post('/events', async (req, res) => {
     });
   }
 
-  console.log('Moderation Service received event', type);
+  console.log('Moderation Service (v 0.0.1) received event', type);
 
   res.send({ status: 'OK' });
 });

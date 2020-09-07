@@ -2,40 +2,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: event-bus-depl
+  name: moderation-depl
 spec:
   replicas: 1
-  # Manaage pods created with the label app: event-bus
+  # Manaage pods created with the label app: moderation
   selector:
     matchLabels:
-      app: event-bus
-  # create pods and give them the label app: event-bus
+      app: moderation
+  # create pods and give them the label app: moderation
   template:
     metadata:
       labels:
-        app: event-bus
+        app: moderation
     spec:
       containers:
-        - name: event-bus
-          image: wjn1/event-bus:0.0.4
+        - name: moderation
+          image: wjn1/moderation:0.0.1
           resources:
             limits:
               memory: '128Mi'
               cpu: '500m'
           ports:
-            - containerPort: 4005
+            - containerPort: 4003
 ---
 # Event Bus ClusterIP
 apiVersion: v1
 kind: Service
 metadata:
-  name: event-bus-srv
+  name: moderation-srv
 spec:
   selector:
-    app: event-bus
+    app: moderation
   type: ClusterIP
   ports:
-    - name: event-bus
+    - name: moderation
       protocol: TCP
-      port: 4005
-      targetPort: 4005
+      port: 4003
+      targetPort: 4003
