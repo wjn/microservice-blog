@@ -6,7 +6,7 @@ import CommentList from './CommentList';
 export default () => {
   const [posts, setPosts] = useState({});
 
-  const URL_QUERY_SERVICE = 'http://query-srv:4002';
+  const URL_QUERY_SERVICE = 'http://wjn-k8s-posts.com';
 
   const fetchPosts = async () => {
     // get aggregated posts from the query service

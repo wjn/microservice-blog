@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: posts
-          image: wjn1/posts:0.1.7
+          image: wjn1/posts
           resources:
             limits:
               memory: '128Mi'

@@ -4,13 +4,13 @@ import axios from 'axios';
 export default () => {
   const [title, setTitle] = useState('');
 
-  const URL_POSTS_SERVICE = 'http://posts-clusterip-srv:4000';
+  const URL_POSTS_SERVICE = 'http://wjn-k8s-posts.com';
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
     // send new post to Post Service
-    await axios.post(`${URL_POSTS_SERVICE}/posts`, {
+    await axios.post(`${URL_POSTS_SERVICE}/posts/create`, {
       title,
     });
 

@@ -6,7 +6,7 @@ export default ({ postId }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const URL_COMMENTS_SERVICE = 'http://comments-srv:4001';
+    const URL_COMMENTS_SERVICE = 'http://wjn-k8s-posts.com';
 
     // send new comments to comments service
     await axios.post(`${URL_COMMENTS_SERVICE}/posts/${postId}/comments`, {
